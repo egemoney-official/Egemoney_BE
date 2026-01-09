@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: igemoney_BE
+  profiles:
+    default: dev
+
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+    defer-datasource-initialization: true
+
+app:
+  costume:
+    public-url-prefix: /costumes/
+
+jwt:
+  secret: ${JWT_SECRET_KEY:this_is_dummy_jwt_secret_key_not_for_dev_but_ci_passing_lessssssssssgo}
+  expiration: 864000000 # 240h
+
+logging:
+  pattern:
+    dateformat: "yyyy-MM-dd HH:mm:ss.SSS, Asia/Seoul"
+
+
+kakao:
+  client-id: ${KAKAO_CLIENT_ID:dummy_kakao_client_id}
+  redirect-uri: ${KAKAO_REDIRECT_URI:http://localhost:8080}
+
+springdoc:
+  swagger-ui:
+    path: /api-test
+    groups-order: DESC
+    operations-sorter: alpha
+  paths-to-match:
+    - /api/**

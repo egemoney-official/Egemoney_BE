@@ -1,0 +1,118 @@
+package com.igemoney.igemoney_BE.user.entity;
+
+import com.igemoney.igemoney_BE.common.entity.BaseEntity;
+import com.igemoney.igemoney_BE.propensity.type.InvestmentPropensity;
+import jakarta.persistence.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+
+
+@Entity
+@Table(name = "user",
+        indexes = {
+                @Index(name = "idx_rating_point_rank",
+                        columnList = "rating_point DESC, rating_point_updated_at ASC"),
+                @Index(name = "idx_consecutive_attendance_rank",
+                        columnList = "consecutive_attendance DESC, consecutive_attendance_updated_at ASC")
+        })
+@Getter
+@NoArgsConstructor
+public class User extends BaseEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
+    private Long userId;
+
+    @Column(name = "nickname", unique = true, nullable = false)
+    private String nickname;
+
+    @Column(name = "kakao_oauth_id", unique = true)
+    private Long kakaoOauthId;
+
+    @Column(name = "rating_point")
+    private Integer ratingPoint;
+
+    @Column(name = "rating_point_updated_at")
+    private LocalDateTime ratingPointUpdatedAt;
+
+    @Column(name = "consecutive_attendance")
+    private Integer consecutiveAttendance;
+
+    @Column(name = "consecutive_attendance_updated_at")
+    private LocalDateTime consecutiveAttendanceUpdatedAt;
+
+    @Column(name = "today_count")
+    private Integer todayCount;
+
+    @Column(name = "is_active")
+    private Boolean isActive;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "investment_propensity")
+    private InvestmentPropensity investmentPropensity;
+
+    @Column(nullable = false)
+    private Long wornCostumeId;
+
+
+    // 가입단에서 유저를 만들 때 사용하는 생성자
+    @Builder
+    public User(String nickname, Long oauthId) {
+        this.nickname = nickname;
+        this.kakaoOauthId = oauthId;
+        this.ratingPoint = 0;
+        this.consecutiveAttendance = 0;
+        this.todayCount = 0;
+        this.isActive = true;
+        this.investmentPropensity = InvestmentPropensity.UNDIAGNOSED;
+        this.wornCostumeId = 0L;
+
+        LocalDateTime now = LocalDateTime.now();
+        this.ratingPointUpdatedAt = now;
+        this.consecutiveAttendanceUpdatedAt = now;
+    }
+
+
+    public void increaseTodaySolvedCount() {
+        this.todayCount++;
+    }
+
+    public void resetTodaySolvedCount() {
+        this.todayCount = 0;
+    }
+
+    public void increaseConsecutiveAttendance() {
+        this.consecutiveAttendance++;
+        this.consecutiveAttendanceUpdatedAt = LocalDateTime.now();
+    }
+
+    public  void resetConsecutiveAttendance() {
+        this.consecutiveAttendance = 0;
+        this.consecutiveAttendanceUpdatedAt = LocalDateTime.now();
+    }
+
+    public void updateInvestmentPropensity(InvestmentPropensity propensity) {
+        this.investmentPropensity = propensity;
+    }
+
+    public void updateWornCostumeId(Long costumeId) {
+        this.wornCostumeId = costumeId;
+    }
+
+    public void takeOffWornCostume() {
+        this.wornCostumeId = 0L;
+    }
+
+    public void gainAwardRatingPoint(int ratingPoint) {
+        this.ratingPoint += ratingPoint;
+        this.ratingPointUpdatedAt = LocalDateTime.now();
+    }
+
+    public void updateNickname(String reqName) {
+        this.nickname = reqName;
+    }
+}
