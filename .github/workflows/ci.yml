@@ -41,7 +41,7 @@ jobs:
         cache: maven
         
     - name: Cache Maven packages
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ~/.m2
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
@@ -61,7 +61,7 @@ jobs:
       run: mvn -B jacoco:report --file pom.xml
       
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v4
       with:
         file: ./target/site/jacoco/jacoco.xml
         flags: unittests
@@ -70,14 +70,14 @@ jobs:
         
     - name: Upload test results
       if: always()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: test-results-java-${{ matrix.java-version }}
         path: target/surefire-reports/
         
     - name: Upload build artifacts
       if: success() && matrix.java-version == '17'
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package
         path: target/*.jar
@@ -126,7 +126,7 @@ jobs:
       
     - name: Upload security reports
       if: always()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: security-reports
         path: target/dependency-check-report.html

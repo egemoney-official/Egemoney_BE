@@ -118,7 +118,7 @@ mvn clean test jacoco:report
 
 ## 🗺️ Roadmap
 
-### Phase 1: Foundation (Q1 2026)
+### Phase 1: Foundation (Q1)
 - [x] Project setup and initial repository structure
 - [ ] Core authentication and authorization system
 - [ ] User management API endpoints
@@ -126,7 +126,7 @@ mvn clean test jacoco:report
 - [ ] Basic transaction CRUD operations
 - [ ] API documentation setup
 
-### Phase 2: Core Features (Q2 2026)
+### Phase 2: Core Features (Q2)
 - [ ] Advanced transaction processing
 - [ ] Payment gateway integration
 - [ ] Account balance management
@@ -134,7 +134,7 @@ mvn clean test jacoco:report
 - [ ] Email notification service
 - [ ] Rate limiting and security enhancements
 
-### Phase 3: Analytics & Reporting (Q3 2026)
+### Phase 3: Analytics & Reporting (Q3)
 - [ ] Financial analytics dashboard backend
 - [ ] Transaction reporting and export
 - [ ] Statistical data aggregation
@@ -142,7 +142,7 @@ mvn clean test jacoco:report
 - [ ] Audit logging system
 - [ ] Performance monitoring and optimization
 
-### Phase 4: Advanced Features (Q4 2026)
+### Phase 4: Advanced Features (Q4)
 - [ ] Multi-currency support
 - [ ] Recurring transactions
 - [ ] Budget planning features

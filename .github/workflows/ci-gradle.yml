@@ -57,7 +57,7 @@ jobs:
       run: ./gradlew jacocoTestReport
       
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v4
       with:
         file: ./build/reports/jacoco/test/jacocoTestReport.xml
         flags: unittests
@@ -66,14 +66,14 @@ jobs:
         
     - name: Upload test results
       if: always()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: test-results-java-${{ matrix.java-version }}
         path: build/test-results/
         
     - name: Upload build artifacts
       if: success() && matrix.java-version == '17'
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package
         path: build/libs/*.jar
@@ -125,7 +125,7 @@ jobs:
       
     - name: Upload security reports
       if: always()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: security-reports
         path: build/reports/dependency-check-report.html
