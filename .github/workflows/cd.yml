@@ -55,7 +55,6 @@ jobs:
           script: |
             # 1. 변수 정의 (GitHub Secrets 값을 쉘 변수로 명시적 할당)
             COMMIT_HASH=$(echo ${{ github.sha }} | cut -c1-7)
-            DOCKER_USER=${{ secrets.DOCKER_USERNAME }}
             
             # 2. .env 파일 생성 (이름을 .env로 하면 compose가 자동으로 읽습니다)
             cat << 'EOF' > ~/.env
