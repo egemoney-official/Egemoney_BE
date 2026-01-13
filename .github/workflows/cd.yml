@@ -53,19 +53,19 @@ jobs:
           key: ${{ secrets.EC2_PRIVATE_KEY }} # pem 키
           # 도커 작업
           script: |
-            # 커밋 해시 설정
+            # 1. 변수 정의 (GitHub Secrets 값을 쉘 변수로 명시적 할당)
             COMMIT_HASH=$(echo ${{ github.sha }} | cut -c1-7)
+            DOCKER_USER=${{ secrets.DOCKER_USERNAME }}
             
-            # .env 파일 생성
-            cat << 'EOF' > ~/igemoney-be.env
+            # 2. .env 파일 생성 (이름을 .env로 하면 compose가 자동으로 읽습니다)
+            cat << 'EOF' > ~/.env
             ${{ secrets.ENV_FILE }}
             EOF
             
-            # 이미지 Pull 및 컨테이너 실행
-            # --remove-orphans는 설정에서 빠진 컨테이너가 있다면 정리해줍니다.
-            sudo DOCKER_USERNAME=$DOCKER_USERNAME COMMIT_HASH=$COMMIT_HASH \
-            docker compose up -d --build igemoney-be 
+            # 3. Docker Compose 실행
+            # 변수를 앞에 붙여서 sudo 실행 환경으로 넘겨줍니다.
+            sudo DOCKER_USERNAME=$DOCKER_USER COMMIT_HASH=$COMMIT_HASH \
+            docker compose up -d igemoney-be
             
-            # 사용하지 않는 이미지 정리
+            # 4. 청소
             sudo docker image prune -f
-            
