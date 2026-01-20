@@ -18,6 +18,7 @@ public class JwtUtil {
 
     private final SecretKey secretKey;
     private final long expirationMs;
+    private static final String ROLE_KEY = "role";
 
     public JwtUtil(@Value("${jwt.secret}") String secretKey, @Value("${jwt.expiration}") long expirationMs) {
         this.secretKey = Keys.hmacShaKeyFor(secretKey.getBytes());
@@ -31,10 +32,24 @@ public class JwtUtil {
         return Jwts.builder()
             .subject(user.getUserId().toString())
             .claim("nickname", user.getNickname())
+            .claim(ROLE_KEY, user.getRole().name())
             .issuedAt(now)
             .expiration(expiryDate)
             .signWith(secretKey, Jwts.SIG.HS256)
             .compact();
+    }
+
+    public String getRole(String token) {
+        try{
+            return Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .get(ROLE_KEY).toString();
+        } catch (Exception e) {
+            throw new IllegalArgumentException("유효하지 않은 토큰입니다.", e);
+        }
     }
 
     public String extractJwtTokenFromHeader(HttpServletRequest request) {
