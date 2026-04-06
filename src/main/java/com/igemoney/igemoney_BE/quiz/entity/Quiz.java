@@ -8,6 +8,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -33,6 +35,14 @@ public class Quiz extends BaseEntity {
 
     @Column(name = "question_data", columnDefinition = "json")
     private String questionData;
+
+    @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("selectOrder ASC")
+    private final List<QuizSelect> selects = new ArrayList<>();
+
+    @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("id ASC")
+    private final List<QuizSubjective> subjectives = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     @Column(name = "difficulty_level", nullable = false)
@@ -60,5 +70,15 @@ public class Quiz extends BaseEntity {
     }
     public void updateCorrectRate(BigDecimal newCorrectRate) {
         this.correctRate = newCorrectRate;
+    }
+
+    public void addSelect(QuizSelect select) {
+        selects.add(select);
+        select.assignQuiz(this);
+    }
+
+    public void addSubjective(QuizSubjective subjective) {
+        subjectives.add(subjective);
+        subjective.assignQuiz(this);
     }
 }
