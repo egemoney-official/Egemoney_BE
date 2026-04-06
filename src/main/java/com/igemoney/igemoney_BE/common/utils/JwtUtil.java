@@ -1,5 +1,6 @@
 package com.igemoney.igemoney_BE.common.utils;
 
+import com.igemoney.igemoney_BE.common.exception.user.UnvalidJwtTokenException;
 import com.igemoney.igemoney_BE.user.entity.User;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -40,15 +41,16 @@ public class JwtUtil {
     }
 
     public String getRole(String token) {
-        try{
-            return Jwts.parser()
+        try {
+            Object role = Jwts.parser()
                 .verifyWith(secretKey)
                 .build()
                 .parseSignedClaims(token)
                 .getPayload()
-                .get(ROLE_KEY).toString();
+                .get(ROLE_KEY);
+            return role != null ? role.toString() : "ROLE_USER";
         } catch (Exception e) {
-            throw new IllegalArgumentException("유효하지 않은 토큰입니다.", e);
+            throw new UnvalidJwtTokenException("유효하지 않은 토큰입니다.");
         }
     }
 
@@ -64,7 +66,6 @@ public class JwtUtil {
 
     public Boolean validateJwtToken(String token) {
         try {
-            // jwt를 파싱하는 코드지만 가장 큰 목적은 파싱 도중 잘못된 토큰이면 예외를 뱉어내는 데에 있다
             Jwts.parser()
                 .verifyWith(secretKey)
                 .build()
@@ -72,11 +73,11 @@ public class JwtUtil {
             return true;
 
         } catch (SecurityException e) {
-            throw new IllegalArgumentException("decryption를 실패했습니다.", e);
+            throw new IllegalArgumentException("decryption을 실패했습니다.", e);
         } catch (MalformedJwtException e) {
-            throw new IllegalArgumentException("신뢰할 수 없는 토큰입니다.", e);
+            throw new IllegalArgumentException("올바르지 않은 토큰입니다.", e);
         } catch (ExpiredJwtException e) {
-            throw new IllegalArgumentException("토큰이 만료됐습니다.", e);
+            throw new IllegalArgumentException("토큰이 만료되었습니다.", e);
         } catch (Exception e) {
             throw new IllegalArgumentException("유효하지 않은 토큰입니다.", e);
         }
@@ -84,7 +85,7 @@ public class JwtUtil {
     }
 
     public String getSubject(String token) {
-        try{
+        try {
             return Jwts.parser()
                 .verifyWith(secretKey)
                 .build()
@@ -95,6 +96,4 @@ public class JwtUtil {
             throw new IllegalArgumentException("유효하지 않은 토큰입니다.", e);
         }
     }
-
-
 }

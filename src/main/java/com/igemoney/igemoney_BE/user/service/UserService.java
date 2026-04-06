@@ -62,7 +62,9 @@ public class UserService {
             .orElseThrow(() -> new NotRegisteredUserException("가입하지 않은 유저입니다. 회원가입 해야 합니다."));
 
         Role role = determineRole(oauthId);
-        user.updateRole(role);
+        if (user.getRole() != role) {
+            user.updateRole(role);
+        }
 
         String jwtToken = jwtUtil.generateToken(user);
 
