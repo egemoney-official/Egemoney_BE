@@ -2,6 +2,7 @@ package com.igemoney.igemoney_BE.common.interceptor;
 
 
 import com.igemoney.igemoney_BE.common.annotation.Authenticated;
+import com.igemoney.igemoney_BE.common.exception.user.AdminAccessDeniedException;
 import com.igemoney.igemoney_BE.common.exception.user.NoUserIdTokenException;
 import com.igemoney.igemoney_BE.common.exception.user.UnvalidJwtTokenException;
 import com.igemoney.igemoney_BE.common.utils.JwtUtil;
@@ -13,9 +14,6 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.nio.file.AccessDeniedException;
-
-
 @Component
 @RequiredArgsConstructor
 public class AuthenticationInterceptor implements HandlerInterceptor {
@@ -24,7 +22,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        if(!(handler instanceof HandlerMethod)) { // 정적 리소스는 곧바로 통과
+        if(!(handler instanceof HandlerMethod)) {
             return true;
         }
 
@@ -46,7 +44,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             String role = jwtUtil.getRole(token);
             String requestURI = request.getRequestURI();
             if(requestURI.startsWith("/api/admin") && !"ROLE_ADMIN".equals(role)) {
-                throw new AccessDeniedException("관리자 권한이 없습니다.");
+                throw new AdminAccessDeniedException("관리자 권한이 없습니다.");
             }
             request.setAttribute("role", role);
             return true;
@@ -65,5 +63,4 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
         HandlerInterceptor.super.afterCompletion(request, response, handler, ex);
     }
-
 }

@@ -1,6 +1,7 @@
 package com.igemoney.igemoney_BE.common.exception;
 
 import com.igemoney.igemoney_BE.common.exception.quiz.QuizNotFoundException;
+import com.igemoney.igemoney_BE.common.exception.user.AdminAccessDeniedException;
 import com.igemoney.igemoney_BE.common.exception.user.DuplicateNicknameException;
 import com.igemoney.igemoney_BE.common.exception.user.NoUserIdTokenException;
 import com.igemoney.igemoney_BE.common.exception.user.NotRegisteredUserException;
@@ -12,8 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import java.nio.file.AccessDeniedException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -50,8 +49,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
     }
 
-    @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<ErrorResponse> handleAccessDenied(AccessDeniedException e) {
+    @ExceptionHandler(AdminAccessDeniedException.class)
+    public ResponseEntity<ErrorResponse> handleAccessDenied(AdminAccessDeniedException e) {
         ErrorResponse errorBody = ErrorResponse.of(
             HttpStatus.FORBIDDEN.value(),
             e.getMessage()
@@ -67,5 +66,4 @@ public class GlobalExceptionHandler {
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
     }
-
 }
