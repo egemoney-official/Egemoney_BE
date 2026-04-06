@@ -3,9 +3,9 @@ package com.igemoney.igemoney_BE.common.exception;
 import com.igemoney.igemoney_BE.common.exception.quiz.QuizNotFoundException;
 import com.igemoney.igemoney_BE.common.exception.user.AdminAccessDeniedException;
 import com.igemoney.igemoney_BE.common.exception.user.DuplicateNicknameException;
+import com.igemoney.igemoney_BE.common.exception.user.InvalidJwtTokenException;
 import com.igemoney.igemoney_BE.common.exception.user.NoUserIdTokenException;
 import com.igemoney.igemoney_BE.common.exception.user.NotRegisteredUserException;
-import com.igemoney.igemoney_BE.common.exception.user.UnvalidJwtTokenException;
 import com.igemoney.igemoney_BE.common.exception.user.UserNotFoundException;
 import com.igemoney.igemoney_BE.topic.exception.TopicNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({
         NotRegisteredUserException.class,
         NoUserIdTokenException.class,
-        UnvalidJwtTokenException.class,
+        InvalidJwtTokenException.class,
     })
 
     public ResponseEntity<ErrorResponse> handle401Errors(RuntimeException e) {

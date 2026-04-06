@@ -3,8 +3,8 @@ package com.igemoney.igemoney_BE.common.interceptor;
 
 import com.igemoney.igemoney_BE.common.annotation.Authenticated;
 import com.igemoney.igemoney_BE.common.exception.user.AdminAccessDeniedException;
+import com.igemoney.igemoney_BE.common.exception.user.InvalidJwtTokenException;
 import com.igemoney.igemoney_BE.common.exception.user.NoUserIdTokenException;
-import com.igemoney.igemoney_BE.common.exception.user.UnvalidJwtTokenException;
 import com.igemoney.igemoney_BE.common.utils.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -31,7 +31,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             String token = jwtUtil.extractJwtTokenFromHeader(request);
 
             if (token == null || !jwtUtil.validateJwtToken(token)) {
-                throw new UnvalidJwtTokenException("토큰이 없거나 유효하지 않은 토큰입니다.");
+                throw new InvalidJwtTokenException("토큰이 없거나 유효하지 않은 토큰입니다.", null);
             }
 
             String subject = jwtUtil.getSubject(token);
