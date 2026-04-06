@@ -1,6 +1,7 @@
 package com.igemoney.igemoney_BE.common.utils;
 
-import com.igemoney.igemoney_BE.common.exception.user.UnvalidJwtTokenException;
+import com.igemoney.igemoney_BE.common.exception.user.InvalidJwtTokenException;
+import com.igemoney.igemoney_BE.user.entity.Role;
 import com.igemoney.igemoney_BE.user.entity.User;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -48,9 +49,9 @@ public class JwtUtil {
                 .parseSignedClaims(token)
                 .getPayload()
                 .get(ROLE_KEY);
-            return role != null ? role.toString() : "ROLE_USER";
+            return role != null ? role.toString() : Role.ROLE_USER.name();
         } catch (Exception e) {
-            throw new UnvalidJwtTokenException("유효하지 않은 토큰입니다.");
+            throw new InvalidJwtTokenException("유효하지 않은 토큰입니다.", e);
         }
     }
 
@@ -73,13 +74,11 @@ public class JwtUtil {
             return true;
 
         } catch (SecurityException e) {
-            throw new IllegalArgumentException("decryption을 실패했습니다.", e);
+            throw new InvalidJwtTokenException("decryption을 실패했습니다.",e);
         } catch (MalformedJwtException e) {
-            throw new IllegalArgumentException("올바르지 않은 토큰입니다.", e);
+            throw new InvalidJwtTokenException("올바르지 않은 토큰입니다.",e);
         } catch (ExpiredJwtException e) {
-            throw new IllegalArgumentException("토큰이 만료되었습니다.", e);
-        } catch (Exception e) {
-            throw new IllegalArgumentException("유효하지 않은 토큰입니다.", e);
+            throw new InvalidJwtTokenException("토큰이 만료되었습니다.",e);
         }
 
     }
