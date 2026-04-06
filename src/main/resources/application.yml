@@ -13,6 +13,9 @@ spring:
 app:
   costume:
     public-url-prefix: /costumes/
+  auth:
+    admin-ids:
+      - 4474468638
 
 jwt:
   secret: ${JWT_SECRET_KEY:this_is_dummy_jwt_secret_key_not_for_dev_but_ci_passing_lessssssssssgo}

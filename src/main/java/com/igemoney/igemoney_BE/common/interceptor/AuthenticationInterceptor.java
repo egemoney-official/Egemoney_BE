@@ -13,6 +13,8 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.nio.file.AccessDeniedException;
+
 
 @Component
 @RequiredArgsConstructor
@@ -40,6 +42,13 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             }
             Long userId = Long.parseLong(subject);
             request.setAttribute("userId", userId);
+
+            String role = jwtUtil.getRole(token);
+            String requestURI = request.getRequestURI();
+            if(requestURI.startsWith("/api/admin") && !"ROLE_ADMIN".equals(role)) {
+                throw new AccessDeniedException("관리자 권한이 없습니다.");
+            }
+            request.setAttribute("role", role);
             return true;
         }
         return true;

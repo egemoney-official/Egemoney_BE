@@ -27,6 +27,10 @@ public class User extends BaseEntity {
     @Column(name = "user_id")
     private Long userId;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
+    private Role role;
+
     @Column(name = "nickname", unique = true, nullable = false)
     private String nickname;
 
@@ -61,9 +65,11 @@ public class User extends BaseEntity {
 
     // 가입단에서 유저를 만들 때 사용하는 생성자
     @Builder
-    public User(String nickname, Long oauthId) {
+    public User(String nickname, Long oauthId, Role role) {
         this.nickname = nickname;
         this.kakaoOauthId = oauthId;
+        this.role = role;
+
         this.ratingPoint = 0;
         this.consecutiveAttendance = 0;
         this.todayCount = 0;
@@ -114,5 +120,9 @@ public class User extends BaseEntity {
 
     public void updateNickname(String reqName) {
         this.nickname = reqName;
+    }
+
+    public void updateRole(Role role) {
+        this.role = role;
     }
 }
