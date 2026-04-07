@@ -33,9 +33,6 @@ public class Quiz extends BaseEntity {
     @Column(name = "question_type", nullable = false)
     private QuestionType questionType;
 
-    @Column(name = "question_data", columnDefinition = "json")
-    private String questionData;
-
     @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("selectOrder ASC")
     private final List<QuizSelect> selects = new ArrayList<>();
@@ -58,11 +55,10 @@ public class Quiz extends BaseEntity {
 
 
     @Builder
-    public Quiz(QuizTopic topic, String questionTitle, QuestionType questionType, String questionData, DifficultyLevel difficultyLevel, String explanation, Integer questionOrder) {
+    public Quiz(QuizTopic topic, String questionTitle, QuestionType questionType, DifficultyLevel difficultyLevel, String explanation, Integer questionOrder) {
         this.topic = topic;
         this.questionTitle = questionTitle;
         this.questionType = questionType;
-        this.questionData = questionData;
         this.difficultyLevel = difficultyLevel;
         this.explanation = explanation;
         this.questionOrder = questionOrder;
