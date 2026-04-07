@@ -1,5 +1,6 @@
 package com.igemoney.igemoney_BE.quiz.service;
 
+import com.igemoney.igemoney_BE.common.exception.quiz.QuizAttemptNotFoundException;
 import com.igemoney.igemoney_BE.common.exception.quiz.QuizNotFoundException;
 import com.igemoney.igemoney_BE.common.exception.user.UserNotFoundException;
 import com.igemoney.igemoney_BE.quiz.dto.QuizSubmitRequest;
@@ -55,7 +56,7 @@ public class QuizAttemptService {
 
     public void submitReviewQuiz(Long quizId, QuizSubmitRequest request, Long userId) {
         UserQuizAttempt reviewQuiz = userQuizAttemptRepository.findByUser_userIdAndQuizId(userId, quizId)
-            .orElseThrow(UserNotFoundException::new);
+            .orElseThrow(QuizAttemptNotFoundException::new);
 
         if (request.isCorrect()) {
             reviewQuiz.updateOnCorrectReview();
