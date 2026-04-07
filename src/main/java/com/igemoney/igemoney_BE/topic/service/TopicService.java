@@ -4,7 +4,7 @@ import com.igemoney.igemoney_BE.common.exception.user.UserNotFoundException;
 import com.igemoney.igemoney_BE.quiz.entity.Quiz;
 import com.igemoney.igemoney_BE.topic.dto.*;
 import com.igemoney.igemoney_BE.topic.entity.QuizTopic;
-import com.igemoney.igemoney_BE.topic.exception.TopicNotFoundException;
+import com.igemoney.igemoney_BE.common.exception.topic.TopicNotFoundException;
 import com.igemoney.igemoney_BE.topic.repository.TopicRepository;
 import com.igemoney.igemoney_BE.user.entity.User;
 import com.igemoney.igemoney_BE.user.repository.UserRepository;

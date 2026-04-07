@@ -1,6 +1,8 @@
 package com.igemoney.igemoney_BE.common.exception;
 
 import com.igemoney.igemoney_BE.common.exception.quiz.QuizAttemptNotFoundException;
+import com.igemoney.igemoney_BE.common.exception.quiz.InvalidQuizAnswerException;
+import com.igemoney.igemoney_BE.common.exception.quiz.InvalidQuizCreateRequestException;
 import com.igemoney.igemoney_BE.common.exception.quiz.QuizNotFoundException;
 import com.igemoney.igemoney_BE.common.exception.user.AdminAccessDeniedException;
 import com.igemoney.igemoney_BE.common.exception.user.DuplicateNicknameException;
@@ -8,7 +10,7 @@ import com.igemoney.igemoney_BE.common.exception.user.InvalidJwtTokenException;
 import com.igemoney.igemoney_BE.common.exception.user.NoUserIdTokenException;
 import com.igemoney.igemoney_BE.common.exception.user.NotRegisteredUserException;
 import com.igemoney.igemoney_BE.common.exception.user.UserNotFoundException;
-import com.igemoney.igemoney_BE.topic.exception.TopicNotFoundException;
+import com.igemoney.igemoney_BE.common.exception.topic.TopicNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -47,6 +49,18 @@ public class GlobalExceptionHandler {
         ErrorResponse errorBody = ErrorResponse.of(
             HttpStatus.BAD_REQUEST.value(),
             e.getBindingResult().getAllErrors().get(0).getDefaultMessage()
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+    }
+
+    @ExceptionHandler({
+        InvalidQuizAnswerException.class,
+        InvalidQuizCreateRequestException.class
+    })
+    public ResponseEntity<ErrorResponse> handleBadQuizRequest(RuntimeException e) {
+        ErrorResponse errorBody = ErrorResponse.of(
+            HttpStatus.BAD_REQUEST.value(),
+            e.getMessage()
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
     }
