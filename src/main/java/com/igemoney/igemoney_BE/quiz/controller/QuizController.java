@@ -6,6 +6,7 @@ import com.igemoney.igemoney_BE.quiz.dto.BookmarkListResponse;
 import com.igemoney.igemoney_BE.quiz.dto.QuizResponse;
 import com.igemoney.igemoney_BE.quiz.dto.QuizReviewResponse;
 import com.igemoney.igemoney_BE.quiz.dto.QuizSubmitRequest;
+import com.igemoney.igemoney_BE.quiz.dto.QuizSubmitResponse;
 import com.igemoney.igemoney_BE.quiz.service.BookmarkService;
 import com.igemoney.igemoney_BE.quiz.service.QuizService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -45,10 +46,11 @@ public class QuizController {
 
     @Authenticated
     @PostMapping("/{id}/submit")
-    public void submitQuizResult(@PathVariable Long id, @RequestBody QuizSubmitRequest request,
+    public QuizSubmitResponse submitQuizResult(@PathVariable Long id, @RequestBody QuizSubmitRequest request,
                                  @RequestAttribute Long userId) {
-        quizService.submitQuizResult(id, request, userId);
+        QuizSubmitResponse response = quizService.submitQuizResult(id, request, userId);
         attendanceService.incrementTodaySolvedCount(userId);
+        return response;
     }
 
     @Authenticated
@@ -65,9 +67,9 @@ public class QuizController {
 
     @Authenticated
     @PostMapping("/review/{quizId}")
-    public void submitQuizReview(@PathVariable Long quizId, @RequestBody QuizSubmitRequest request,
+    public QuizSubmitResponse submitQuizReview(@PathVariable Long quizId, @RequestBody QuizSubmitRequest request,
                                  @RequestAttribute Long userId) {
-        quizService.submitReviewQuiz(quizId, request, userId);
+        return quizService.submitReviewQuiz(quizId, request, userId);
     }
 
     @Authenticated

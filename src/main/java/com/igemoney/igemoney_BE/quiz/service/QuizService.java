@@ -2,7 +2,9 @@ package com.igemoney.igemoney_BE.quiz.service;
 
 import com.igemoney.igemoney_BE.quiz.dto.QuizResponse;
 import com.igemoney.igemoney_BE.quiz.dto.QuizReviewResponse;
+import com.igemoney.igemoney_BE.quiz.dto.QuizCreateRequest;
 import com.igemoney.igemoney_BE.quiz.dto.QuizSubmitRequest;
+import com.igemoney.igemoney_BE.quiz.dto.QuizSubmitResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +16,11 @@ public class QuizService {
 
     private final QuizQueryService quizQueryService;
     private final QuizAttemptService quizAttemptService;
+    private final QuizCreateService quizCreateService;
+
+    public QuizResponse createQuiz(QuizCreateRequest request) {
+        return quizCreateService.createQuiz(request);
+    }
 
     @Transactional(readOnly = true)
     public QuizResponse getQuizInfo(Long quizId, Long userId) {
@@ -30,11 +37,11 @@ public class QuizService {
         return quizQueryService.getQuizReview(userId);
     }
 
-    public void submitQuizResult(Long quizId, QuizSubmitRequest request, Long userId) {
-        quizAttemptService.submitQuizResult(quizId, request, userId);
+    public QuizSubmitResponse submitQuizResult(Long quizId, QuizSubmitRequest request, Long userId) {
+        return quizAttemptService.submitQuizResult(quizId, request, userId);
     }
 
-    public void submitReviewQuiz(Long quizId, QuizSubmitRequest request, Long userId) {
-        quizAttemptService.submitReviewQuiz(quizId, request, userId);
+    public QuizSubmitResponse submitReviewQuiz(Long quizId, QuizSubmitRequest request, Long userId) {
+        return quizAttemptService.submitReviewQuiz(quizId, request, userId);
     }
 }

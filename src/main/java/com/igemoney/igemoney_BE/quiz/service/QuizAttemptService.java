@@ -4,6 +4,7 @@ import com.igemoney.igemoney_BE.common.exception.quiz.QuizAttemptNotFoundExcepti
 import com.igemoney.igemoney_BE.common.exception.quiz.QuizNotFoundException;
 import com.igemoney.igemoney_BE.common.exception.user.UserNotFoundException;
 import com.igemoney.igemoney_BE.quiz.dto.QuizSubmitRequest;
+import com.igemoney.igemoney_BE.quiz.dto.QuizSubmitResponse;
 import com.igemoney.igemoney_BE.quiz.entity.Quiz;
 import com.igemoney.igemoney_BE.quiz.entity.UserQuizAttempt;
 import com.igemoney.igemoney_BE.quiz.entity.enums.DifficultyLevel;
@@ -25,7 +26,7 @@ public class QuizAttemptService {
     private final UserQuizAttemptRepository userQuizAttemptRepository;
     private final QuizScoringService quizScoringService;
 
-    public void submitQuizResult(Long quizId, QuizSubmitRequest request, Long userId) {
+    public QuizSubmitResponse submitQuizResult(Long quizId, QuizSubmitRequest request, Long userId) {
         Quiz quiz = quizRepository.findById(quizId)
             .orElseThrow(QuizNotFoundException::new);
 
@@ -35,11 +36,13 @@ public class QuizAttemptService {
         UserQuizAttempt attempt = userQuizAttemptRepository.findByUserAndQuiz(user, quiz)
             .orElse(null);
 
+        QuizSubmitResponse result = quizScoringService.gradeQuiz(quiz, request);
+
         if (attempt != null) {
-            return;
+            return result;
         }
 
-        if (request.isCorrect()) {
+        if (result.isCorrect()) {
             UserQuizAttempt userQuizCorrect = UserQuizAttempt.userQuizCorrect(user, quiz);
             userQuizAttemptRepository.save(userQuizCorrect);
 
@@ -52,16 +55,23 @@ public class QuizAttemptService {
 
         quiz.updateCorrectRate(quizScoringService.calculateAccuracyRate(quiz.getId()));
         quizRepository.save(quiz);
+        return result;
     }
 
-    public void submitReviewQuiz(Long quizId, QuizSubmitRequest request, Long userId) {
+    public QuizSubmitResponse submitReviewQuiz(Long quizId, QuizSubmitRequest request, Long userId) {
+        Quiz quiz = quizRepository.findById(quizId)
+            .orElseThrow(QuizNotFoundException::new);
+
         UserQuizAttempt reviewQuiz = userQuizAttemptRepository.findByUser_userIdAndQuizId(userId, quizId)
             .orElseThrow(QuizAttemptNotFoundException::new);
 
-        if (request.isCorrect()) {
+        QuizSubmitResponse result = quizScoringService.gradeQuiz(quiz, request);
+
+        if (result.isCorrect()) {
             reviewQuiz.updateOnCorrectReview();
         } else {
             reviewQuiz.updateOnIncorrectReview();
         }
+        return result;
     }
 }
