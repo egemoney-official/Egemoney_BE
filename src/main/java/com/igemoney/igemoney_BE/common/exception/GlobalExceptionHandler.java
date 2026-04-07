@@ -1,5 +1,6 @@
 package com.igemoney.igemoney_BE.common.exception;
 
+import com.igemoney.igemoney_BE.common.exception.quiz.QuizAttemptNotFoundException;
 import com.igemoney.igemoney_BE.common.exception.quiz.QuizNotFoundException;
 import com.igemoney.igemoney_BE.common.exception.user.AdminAccessDeniedException;
 import com.igemoney.igemoney_BE.common.exception.user.DuplicateNicknameException;
@@ -33,7 +34,8 @@ public class GlobalExceptionHandler {
         IllegalArgumentException.class,
         TopicNotFoundException.class,
         UserNotFoundException.class,
-        QuizNotFoundException.class
+        QuizNotFoundException.class,
+        QuizAttemptNotFoundException.class
     })
     public ResponseEntity<ErrorResponse> handleNotFoundErrors(RuntimeException e) {
         ErrorResponse errorBody = ErrorResponse.of(HttpStatus.NOT_FOUND.value(), e.getMessage());
