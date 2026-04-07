@@ -53,11 +53,12 @@ public class QuizQueryService {
     }
 
     public QuizReviewResponse getQuizReview(Long userId) {
+        LocalDate today = LocalDate.now();
         List<UserQuizAttempt> attempts = userQuizAttemptRepository.findByUser_userIdAndIsCorrectFalse(userId);
         List<ReviewQuizDetail> quizDetails = attempts.stream()
             .filter(attempt -> attempt.getNextReviewDate() != null &&
-                (attempt.getNextReviewDate().isEqual(LocalDate.now()) ||
-                    attempt.getNextReviewDate().isBefore(LocalDate.now())))
+                (attempt.getNextReviewDate().isEqual(today) ||
+                    attempt.getNextReviewDate().isBefore(today)))
             .map(ReviewQuizDetail::from)
             .toList();
 
