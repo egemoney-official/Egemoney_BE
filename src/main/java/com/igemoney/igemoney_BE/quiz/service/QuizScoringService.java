@@ -66,10 +66,12 @@ public class QuizScoringService {
             .map(this::normalizeSubjectiveAnswer)
             .anyMatch(normalizedUserAnswer::equals);
 
-        String displayAnswer = quizSubjectiveRepository.findFirstByQuizIdAndIsDisplayAnswerTrue(quiz.getId())
-            .or(() -> quizSubjectiveRepository.findFirstByQuizIdOrderByIdAsc(quiz.getId()))
-            .map(QuizSubjective::getAnswerText)
-            .orElse(null);
+        String displayAnswer = answers.stream()
+                .filter(QuizSubjective::getIsDisplayAnswer)
+                .findFirst()
+                .or(() -> answers.stream().findFirst())
+                .map(QuizSubjective::getAnswerText)
+                .orElse(null);
 
         return new QuizSubmitResponse(
             isCorrect,
