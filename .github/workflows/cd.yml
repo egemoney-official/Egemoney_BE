@@ -45,29 +45,29 @@ jobs:
           docker push ${{ secrets.DOCKER_USERNAME }}/igemoney-be:latest
 
       # EC2 배포
-      - name: Docker image pull & Deploy to EC2
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.EC2_HOST }} # EC2 인스턴스 퍼블릭 DNS
-          username: ubuntu
-          key: ${{ secrets.EC2_PRIVATE_KEY }} # pem 키
-          # 도커 작업
-          script: |
+      # - name: Docker image pull & Deploy to EC2
+      #   uses: appleboy/ssh-action@master
+      #   with:
+      #     host: ${{ secrets.EC2_HOST }} # EC2 인스턴스 퍼블릭 DNS
+      #     username: ubuntu
+      #     key: ${{ secrets.EC2_PRIVATE_KEY }} # pem 키
+      #     # 도커 작업
+      #     script: |
             
-            set -e 
+      #       set -e 
             
             
-            # 1. 변수 정의 (GitHub Secrets 값을 쉘 변수로 명시적 할당)
-            export DOCKER_USERNAME="${{ secrets.DOCKER_USERNAME }}"
-            export COMMIT_HASH=$(echo ${{ github.sha }} | cut -c1-7)
+      #       # 1. 변수 정의 (GitHub Secrets 값을 쉘 변수로 명시적 할당)
+      #       export DOCKER_USERNAME="${{ secrets.DOCKER_USERNAME }}"
+      #       export COMMIT_HASH=$(echo ${{ github.sha }} | cut -c1-7)
             
-            # 2. .env 파일 생성 (이름을 .env로 하면 compose가 자동으로 읽습니다)
-            cat << 'EOF' > ~/.env
-            ${{ secrets.ENV_FILE }}
-            EOF
+      #       # 2. .env 파일 생성 (이름을 .env로 하면 compose가 자동으로 읽습니다)
+      #       cat << 'EOF' > ~/.env
+      #       ${{ secrets.ENV_FILE }}
+      #       EOF
             
-            # 3. Docker Compose 실행
-            sudo -E docker compose up -d igemoney-be
+      #       # 3. Docker Compose 실행
+      #       sudo -E docker compose up -d igemoney-be
             
-            # 4. 청소
-            sudo docker image prune -f
+      #       # 4. 청소
+      #       sudo docker image prune -f
