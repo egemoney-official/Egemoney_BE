@@ -1,4 +1,4 @@
-package com.igemoney.igemoney_BE.topic.exception;
+package com.igemoney.igemoney_BE.common.exception.topic;
 
 public class TopicNotFoundException extends RuntimeException {
     public TopicNotFoundException(Long topicId) {
