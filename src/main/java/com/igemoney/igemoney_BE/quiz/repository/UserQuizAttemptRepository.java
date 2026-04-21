@@ -20,5 +20,6 @@ public interface UserQuizAttemptRepository extends JpaRepository<UserQuizAttempt
     long countByQuizId(Long quizId);
     Optional<UserQuizAttempt> findByUserAndQuiz(User user, Quiz quiz);
     Optional<UserQuizAttempt> findByUser_userIdAndQuizId(Long userId, Long quizId);
+    long deleteByQuizId(Long quizId);
 
 }
