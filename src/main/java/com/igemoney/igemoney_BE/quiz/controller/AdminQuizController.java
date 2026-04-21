@@ -1,10 +1,13 @@
 package com.igemoney.igemoney_BE.quiz.controller;
 
 import com.igemoney.igemoney_BE.common.annotation.Authenticated;
-import com.igemoney.igemoney_BE.quiz.dto.AdminQuizListResponse;
-import com.igemoney.igemoney_BE.quiz.dto.QuizCreateRequest;
-import com.igemoney.igemoney_BE.quiz.dto.QuizResponse;
-import com.igemoney.igemoney_BE.quiz.service.QuizAdminService;
+import com.igemoney.igemoney_BE.quiz.dto.admin.AdminQuizListResponse;
+import com.igemoney.igemoney_BE.quiz.dto.common.QuizResponse;
+import com.igemoney.igemoney_BE.quiz.dto.create.QuizCreateRequest;
+import com.igemoney.igemoney_BE.quiz.dto.generate.QuizGenerateRequest;
+import com.igemoney.igemoney_BE.quiz.dto.generate.QuizGenerateResponse;
+import com.igemoney.igemoney_BE.quiz.service.admin.QuizAdminService;
+import com.igemoney.igemoney_BE.quiz.service.generate.AdminQuizGenerationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +28,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminQuizController {
 
     private final QuizAdminService quizAdminService;
+    private final AdminQuizGenerationService adminQuizGenerationService;
+
+    @PostMapping("/generate")
+    @Operation(summary = "퀴즈 생성 초안 요청")
+    public QuizGenerateResponse generateQuiz(@RequestBody QuizGenerateRequest request) {
+        return adminQuizGenerationService.generate(request);
+    }
 
     @PostMapping
     @Operation(summary = "퀴즈 생성")
