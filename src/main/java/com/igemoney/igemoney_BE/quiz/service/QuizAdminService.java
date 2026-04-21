@@ -93,10 +93,11 @@ public class QuizAdminService {
     }
 
     private void validateDuplicateQuestion(QuizCreateRequest request) {
+        String normalizedTarget = normalizeQuestionTitle(request.questionTitle());
         boolean duplicated = quizRepository.findAllByTopicId(request.topicId()).stream()
             .map(Quiz::getQuestionTitle)
             .map(this::normalizeQuestionTitle)
-            .anyMatch(normalized -> normalized.equals(normalizeQuestionTitle(request.questionTitle())));
+            .anyMatch(normalized -> normalized.equals(normalizedTarget));
 
         if (duplicated) {
             throw new DuplicateQuizQuestionException();
