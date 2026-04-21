@@ -1,6 +1,7 @@
 package com.igemoney.igemoney_BE.common.exception;
 
 import com.igemoney.igemoney_BE.common.exception.quiz.QuizAttemptNotFoundException;
+import com.igemoney.igemoney_BE.common.exception.quiz.DuplicateQuizQuestionException;
 import com.igemoney.igemoney_BE.common.exception.quiz.InvalidQuizAnswerException;
 import com.igemoney.igemoney_BE.common.exception.quiz.InvalidQuizCreateRequestException;
 import com.igemoney.igemoney_BE.common.exception.quiz.QuizNotFoundException;
@@ -55,7 +56,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({
         InvalidQuizAnswerException.class,
-        InvalidQuizCreateRequestException.class
+        InvalidQuizCreateRequestException.class,
+        DuplicateQuizQuestionException.class
     })
     public ResponseEntity<ErrorResponse> handleBadQuizRequest(RuntimeException e) {
         ErrorResponse errorBody = ErrorResponse.of(
