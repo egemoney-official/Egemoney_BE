@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
     long deleteByUserUserIdAndQuizId(Long userId, Long quizId);
+    long deleteByQuizId(Long quizId);
 
     @Query("""
         select b
