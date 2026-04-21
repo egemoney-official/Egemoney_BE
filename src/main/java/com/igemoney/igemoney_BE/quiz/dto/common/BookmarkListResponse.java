@@ -1,4 +1,4 @@
-package com.igemoney.igemoney_BE.quiz.dto;
+package com.igemoney.igemoney_BE.quiz.dto.common;
 
 import java.util.List;
 

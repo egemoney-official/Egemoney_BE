@@ -1,17 +1,18 @@
-package com.igemoney.igemoney_BE.quiz.service;
+package com.igemoney.igemoney_BE.quiz.service.admin;
 
 import com.igemoney.igemoney_BE.common.exception.quiz.DuplicateQuizQuestionException;
 import com.igemoney.igemoney_BE.common.exception.quiz.InvalidQuizCreateRequestException;
 import com.igemoney.igemoney_BE.common.exception.quiz.QuizNotFoundException;
-import com.igemoney.igemoney_BE.quiz.dto.AdminQuizListResponse;
-import com.igemoney.igemoney_BE.quiz.dto.AdminQuizSummaryResponse;
-import com.igemoney.igemoney_BE.quiz.dto.QuizCreateRequest;
-import com.igemoney.igemoney_BE.quiz.dto.QuizResponse;
+import com.igemoney.igemoney_BE.quiz.dto.admin.AdminQuizListResponse;
+import com.igemoney.igemoney_BE.quiz.dto.admin.AdminQuizSummaryResponse;
+import com.igemoney.igemoney_BE.quiz.dto.common.QuizResponse;
+import com.igemoney.igemoney_BE.quiz.dto.create.QuizCreateRequest;
 import com.igemoney.igemoney_BE.quiz.entity.Quiz;
 import com.igemoney.igemoney_BE.quiz.entity.enums.QuestionType;
 import com.igemoney.igemoney_BE.quiz.repository.BookmarkRepository;
 import com.igemoney.igemoney_BE.quiz.repository.QuizRepository;
 import com.igemoney.igemoney_BE.quiz.repository.UserQuizAttemptRepository;
+import com.igemoney.igemoney_BE.quiz.service.create.QuizCreateService;
 import java.util.Locale;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

@@ -1,10 +1,10 @@
-package com.igemoney.igemoney_BE.quiz.service;
+package com.igemoney.igemoney_BE.quiz.service.query;
 
 import com.igemoney.igemoney_BE.common.exception.quiz.QuizNotFoundException;
 import com.igemoney.igemoney_BE.common.exception.user.UserNotFoundException;
-import com.igemoney.igemoney_BE.quiz.dto.QuizResponse;
-import com.igemoney.igemoney_BE.quiz.dto.QuizReviewResponse;
-import com.igemoney.igemoney_BE.quiz.dto.ReviewQuizDetail;
+import com.igemoney.igemoney_BE.quiz.dto.common.QuizResponse;
+import com.igemoney.igemoney_BE.quiz.dto.common.QuizReviewResponse;
+import com.igemoney.igemoney_BE.quiz.dto.common.ReviewQuizDetail;
 import com.igemoney.igemoney_BE.quiz.entity.Quiz;
 import com.igemoney.igemoney_BE.quiz.entity.UserQuizAttempt;
 import com.igemoney.igemoney_BE.quiz.repository.BookmarkRepository;

@@ -1,4 +1,4 @@
-package com.igemoney.igemoney_BE.quiz.dto;
+package com.igemoney.igemoney_BE.quiz.dto.create;
 
 import com.igemoney.igemoney_BE.quiz.entity.QuizSubjective;
 

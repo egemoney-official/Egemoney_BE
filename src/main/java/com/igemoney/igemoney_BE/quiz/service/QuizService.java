@@ -1,10 +1,13 @@
 package com.igemoney.igemoney_BE.quiz.service;
 
-import com.igemoney.igemoney_BE.quiz.dto.QuizResponse;
-import com.igemoney.igemoney_BE.quiz.dto.QuizReviewResponse;
-import com.igemoney.igemoney_BE.quiz.dto.QuizCreateRequest;
-import com.igemoney.igemoney_BE.quiz.dto.QuizSubmitRequest;
-import com.igemoney.igemoney_BE.quiz.dto.QuizSubmitResponse;
+import com.igemoney.igemoney_BE.quiz.dto.common.QuizResponse;
+import com.igemoney.igemoney_BE.quiz.dto.common.QuizReviewResponse;
+import com.igemoney.igemoney_BE.quiz.dto.common.QuizSubmitRequest;
+import com.igemoney.igemoney_BE.quiz.dto.common.QuizSubmitResponse;
+import com.igemoney.igemoney_BE.quiz.dto.create.QuizCreateRequest;
+import com.igemoney.igemoney_BE.quiz.service.attempt.QuizAttemptService;
+import com.igemoney.igemoney_BE.quiz.service.create.QuizCreateService;
+import com.igemoney.igemoney_BE.quiz.service.query.QuizQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

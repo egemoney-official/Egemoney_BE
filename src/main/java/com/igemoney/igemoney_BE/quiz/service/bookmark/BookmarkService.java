@@ -1,9 +1,9 @@
-package com.igemoney.igemoney_BE.quiz.service;
+package com.igemoney.igemoney_BE.quiz.service.bookmark;
 
 import com.igemoney.igemoney_BE.common.exception.quiz.QuizNotFoundException;
 import com.igemoney.igemoney_BE.common.exception.user.UserNotFoundException;
-import com.igemoney.igemoney_BE.quiz.dto.BookmarkListResponse;
-import com.igemoney.igemoney_BE.quiz.dto.BookmarkResponse;
+import com.igemoney.igemoney_BE.quiz.dto.common.BookmarkListResponse;
+import com.igemoney.igemoney_BE.quiz.dto.common.BookmarkResponse;
 import com.igemoney.igemoney_BE.quiz.entity.Bookmark;
 import com.igemoney.igemoney_BE.quiz.entity.Quiz;
 import com.igemoney.igemoney_BE.quiz.repository.BookmarkRepository;

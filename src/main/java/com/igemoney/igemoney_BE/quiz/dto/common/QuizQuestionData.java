@@ -1,4 +1,4 @@
-package com.igemoney.igemoney_BE.quiz.dto;
+package com.igemoney.igemoney_BE.quiz.dto.common;
 
 import com.igemoney.igemoney_BE.quiz.entity.Quiz;
 import com.igemoney.igemoney_BE.quiz.entity.enums.QuestionType;

@@ -2,12 +2,12 @@ package com.igemoney.igemoney_BE.quiz.controller;
 
 import com.igemoney.igemoney_BE.attendance.service.AttendanceService;
 import com.igemoney.igemoney_BE.common.annotation.Authenticated;
-import com.igemoney.igemoney_BE.quiz.dto.BookmarkListResponse;
-import com.igemoney.igemoney_BE.quiz.dto.QuizResponse;
-import com.igemoney.igemoney_BE.quiz.dto.QuizReviewResponse;
-import com.igemoney.igemoney_BE.quiz.dto.QuizSubmitRequest;
-import com.igemoney.igemoney_BE.quiz.dto.QuizSubmitResponse;
-import com.igemoney.igemoney_BE.quiz.service.BookmarkService;
+import com.igemoney.igemoney_BE.quiz.dto.common.BookmarkListResponse;
+import com.igemoney.igemoney_BE.quiz.dto.common.QuizResponse;
+import com.igemoney.igemoney_BE.quiz.dto.common.QuizReviewResponse;
+import com.igemoney.igemoney_BE.quiz.dto.common.QuizSubmitRequest;
+import com.igemoney.igemoney_BE.quiz.dto.common.QuizSubmitResponse;
+import com.igemoney.igemoney_BE.quiz.service.bookmark.BookmarkService;
 import com.igemoney.igemoney_BE.quiz.service.QuizService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -22,21 +22,6 @@ public class QuizController {
     private final QuizService quizService;
     private final AttendanceService attendanceService;
     private final BookmarkService bookmarkService;
-
-//    @PostMapping
-//    public QuizResponse createQuiz(@RequestBody QuizCreateRequest quiz){
-//        return quizService.createQuiz(quiz);
-//    }
-//
-//    @DeleteMapping("/{id}")
-//    public void deleteQuiz(@PathVariable Long id) {
-//        quizService.deleteQuiz(id);
-//    }
-
-//    @GetMapping
-//    public List<QuizResponse> getAllQuizzes() {
-//        return quizService.getAll();
-//    }
 
     @Authenticated
     @GetMapping("/{quizId}")

@@ -1,4 +1,4 @@
-package com.igemoney.igemoney_BE.quiz.dto;
+package com.igemoney.igemoney_BE.quiz.dto.common;
 
 public record QuizSubmitResponse(
     boolean isCorrect,

@@ -1,4 +1,4 @@
-package com.igemoney.igemoney_BE.quiz.dto;
+package com.igemoney.igemoney_BE.quiz.dto.create;
 
 import com.igemoney.igemoney_BE.quiz.entity.Quiz;
 import com.igemoney.igemoney_BE.topic.entity.QuizTopic;
@@ -19,6 +19,20 @@ public record QuizCreateRequest(
         List<QuizSelectCreateRequest> selects,
         List<QuizSubjectiveCreateRequest> subjectives
 ) {
+    public QuizCreateRequest withQuestionOrder(Integer questionOrder) {
+        return new QuizCreateRequest(
+            questionTitle,
+            questionType,
+            difficultyLevel,
+            explanation,
+            questionOrder,
+            correctRate,
+            topicId,
+            selects,
+            subjectives
+        );
+    }
+
     public static Quiz toEntity(QuizCreateRequest request, QuizTopic topic) {
         QuestionType parsedQuestionType = QuestionType.valueOf(request.questionType());
         Quiz quiz = Quiz.builder()

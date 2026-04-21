@@ -1,4 +1,4 @@
-package com.igemoney.igemoney_BE.quiz.dto;
+package com.igemoney.igemoney_BE.quiz.dto.admin;
 
 import java.util.List;
 import org.springframework.data.domain.Page;

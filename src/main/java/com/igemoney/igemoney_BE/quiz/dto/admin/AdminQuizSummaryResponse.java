@@ -1,4 +1,4 @@
-package com.igemoney.igemoney_BE.quiz.dto;
+package com.igemoney.igemoney_BE.quiz.dto.admin;
 
 import com.igemoney.igemoney_BE.quiz.entity.Quiz;
 import java.math.BigDecimal;

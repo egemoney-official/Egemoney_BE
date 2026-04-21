@@ -1,9 +1,9 @@
-package com.igemoney.igemoney_BE.quiz.service;
+package com.igemoney.igemoney_BE.quiz.service.create;
 
 import com.igemoney.igemoney_BE.common.exception.quiz.InvalidQuizCreateRequestException;
-import com.igemoney.igemoney_BE.quiz.dto.QuizCreateRequest;
-import com.igemoney.igemoney_BE.quiz.dto.QuizSelectCreateRequest;
-import com.igemoney.igemoney_BE.quiz.dto.QuizSubjectiveCreateRequest;
+import com.igemoney.igemoney_BE.quiz.dto.create.QuizCreateRequest;
+import com.igemoney.igemoney_BE.quiz.dto.create.QuizSelectCreateRequest;
+import com.igemoney.igemoney_BE.quiz.dto.create.QuizSubjectiveCreateRequest;
 import com.igemoney.igemoney_BE.quiz.entity.enums.QuestionType;
 import org.springframework.stereotype.Component;
 
