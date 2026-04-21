@@ -1,5 +1,6 @@
 package com.igemoney.igemoney_BE.quiz.controller;
 
+import com.igemoney.igemoney_BE.common.annotation.Authenticated;
 import com.igemoney.igemoney_BE.quiz.dto.AdminQuizListResponse;
 import com.igemoney.igemoney_BE.quiz.dto.QuizCreateRequest;
 import com.igemoney.igemoney_BE.quiz.dto.QuizResponse;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@Authenticated
 @RequestMapping("/api/admin/quizzes")
 @RequiredArgsConstructor
 @Tag(name = "Admin Quiz", description = "관리자 퀴즈 관리 API")
