@@ -31,7 +31,7 @@ public class SemanticChunkingStrategy implements ChunkingStrategy {
     }
 
     List<Chunk> chunkText(String text, String heading) {
-        List<String> sentences = sentenceSplitter.split(text);
+        List<String> sentences = splitOversizedSentences(sentenceSplitter.split(text), heading);
         if (sentences.isEmpty()) {
             return List.of();
         }
@@ -92,6 +92,26 @@ public class SemanticChunkingStrategy implements ChunkingStrategy {
             chunks.add(new Chunk(ChunkSupport.joinSentences(sentences, start, sentences.size()), heading));
         }
         return ChunkSupport.mergeShortChunks(chunks);
+    }
+
+    private static List<String> splitOversizedSentences(List<String> sentences, String heading) {
+        List<String> normalized = new ArrayList<>();
+        for (String sentence : sentences) {
+            if (sentence.length() <= ChunkingConstants.MAX_SIZE) {
+                normalized.add(sentence);
+                continue;
+            }
+
+            ChunkSupport.splitBySize(
+                sentence,
+                heading,
+                ChunkingConstants.TARGET_SIZE,
+                ChunkingConstants.TARGET_SIZE
+            ).stream()
+                .map(Chunk::content)
+                .forEach(normalized::add);
+        }
+        return normalized;
     }
 
     private static double mean(double[] values) {

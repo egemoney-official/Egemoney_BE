@@ -85,6 +85,23 @@ class ChunkingStrategyTest {
     }
 
     @Test
+    void semanticHonorsMaxSizeWhenOversizedSentenceIsMixedWithOtherSentences() {
+        SemanticChunkingStrategy strategy = new SemanticChunkingStrategy(
+            sentenceSplitter,
+            new KeywordEmbeddingClient()
+        );
+        ParsedDocument document = document(String.join(" ", List.of(
+            sentence("alpha lead", 140),
+            "alpha " + "a".repeat(1_250) + ".",
+            sentence("beta tail", 140)
+        )));
+
+        List<Chunk> chunks = strategy.chunk(document);
+
+        assertThat(chunks).allMatch(chunk -> chunk.charLength() <= ChunkingConstants.MAX_SIZE);
+    }
+
+    @Test
     void structureSplitsByHeadingAndParagraphsWhenSectionExceedsMaxSize() {
         StructureChunkingStrategy strategy = new StructureChunkingStrategy();
         String shortContent = sentence("짧은 섹션", 140);
