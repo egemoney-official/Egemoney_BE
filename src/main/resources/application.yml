@@ -37,3 +37,19 @@ springdoc:
     operations-sorter: alpha
   paths-to-match:
     - /api/**
+
+vector:
+  datasource:
+    url: ${VECTOR_DB_URL:}
+    username: ${VECTOR_DB_USERNAME:}
+    password: ${VECTOR_DB_PASSWORD:}
+  enabled: ${VECTOR_STORE_ENABLED:false}
+
+quiz:
+  generation:
+    mode: ${QUIZ_GENERATION_MODE:mock}
+
+rag:
+  retrieval:
+    strategy: ${RAG_CHUNKING_STRATEGY:structure}
+    top-k: 6
