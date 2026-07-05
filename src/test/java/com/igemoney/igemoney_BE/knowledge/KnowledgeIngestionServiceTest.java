@@ -159,6 +159,74 @@ class KnowledgeIngestionServiceTest {
         );
     }
 
+    @Test
+    void mapsTopicSlugFromFileNameWhenFrontMatterTopicIsAbsent() throws Exception {
+        writeKnowledgeFile(
+            "economic-basic__slug-topic.md",
+            """
+                ---
+                source: 한국은행 경제금융용어 요약
+                ---
+                ## 경기와 물가
+                경기와 물가는 소비, 투자, 고용 상황을 함께 보며 이해해야 한다.
+                """
+        );
+        when(topicRepository.findAll()).thenReturn(List.of(
+            QuizTopic.builder().id(7L).name("경제기초").build()
+        ));
+
+        List<String> events = new ArrayList<>();
+        RecordingVectorStoreRepository vectorStoreRepository = new RecordingVectorStoreRepository(events);
+        KnowledgeIngestionService service = new KnowledgeIngestionService(
+            new KnowledgeDocumentParser(),
+            new ChunkingStrategyRegistry(List.of(new EchoStrategy("structure"))),
+            new RecordingEmbeddingClient(events),
+            vectorStoreRepository,
+            topicRepository,
+            knowledgeDirectory
+        );
+
+        service.ingest(List.of("structure"));
+
+        assertThat(vectorStoreRepository.insertedByStrategy().get("structure"))
+            .extracting(DocumentChunkRecord::topicId)
+            .containsExactly(7L);
+    }
+
+    @Test
+    void splitsChunkEmbeddingsIntoBatchesAndReportsBatchCalls() throws Exception {
+        writeKnowledgeFile(
+            "common__many-chunks.md",
+            """
+                ---
+                source: 공통 자료
+                topic: common
+                ---
+                ## 여러 청크
+                배치 임베딩 호출 수 검증용 문서이다.
+                """
+        );
+        when(topicRepository.findAll()).thenReturn(List.of());
+
+        List<String> events = new ArrayList<>();
+        RecordingEmbeddingClient embeddingClient = new RecordingEmbeddingClient(events);
+        KnowledgeIngestionService service = new KnowledgeIngestionService(
+            new KnowledgeDocumentParser(),
+            new ChunkingStrategyRegistry(List.of(new ManyChunksStrategy("fixed", 129))),
+            embeddingClient,
+            new RecordingVectorStoreRepository(events),
+            topicRepository,
+            knowledgeDirectory
+        );
+
+        KnowledgeIngestionSummary summary = service.ingest(List.of("fixed"));
+
+        assertThat(embeddingClient.batches()).extracting(List::size)
+            .containsExactly(128, 1);
+        assertThat(summary.results().getFirst().insertedChunks()).isEqualTo(129);
+        assertThat(summary.results().getFirst().embeddingBatchCalls()).isEqualTo(2);
+    }
+
     private void writeKnowledgeFile(String fileName, String content) throws Exception {
         Files.writeString(knowledgeDirectory.resolve(fileName), content, StandardCharsets.UTF_8);
     }
@@ -181,6 +249,31 @@ class KnowledgeIngestionServiceTest {
             String heading = document.sections().getFirst().heading();
             String content = name + ":" + document.sections().getFirst().content();
             return List.of(new Chunk(content, heading));
+        }
+    }
+
+    private static final class ManyChunksStrategy implements ChunkingStrategy {
+
+        private final String name;
+        private final int chunkCount;
+
+        private ManyChunksStrategy(String name, int chunkCount) {
+            this.name = name;
+            this.chunkCount = chunkCount;
+        }
+
+        @Override
+        public String name() {
+            return name;
+        }
+
+        @Override
+        public List<Chunk> chunk(ParsedDocument document) {
+            List<Chunk> chunks = new ArrayList<>();
+            for (int index = 0; index < chunkCount; index++) {
+                chunks.add(new Chunk("청크 " + index + " 내용입니다.", null));
+            }
+            return chunks;
         }
     }
 
