@@ -92,6 +92,25 @@ class VectorQuizSimilarityServiceTest {
     }
 
     @Test
+    void exactDuplicateUsesRawSimilarityThresholdBeforeResponseRounding() {
+        GeneratedQuizDraft draft = draft("복리의 의미는?");
+        float[] embedding = new float[] {0.9f};
+        when(embeddingClient.embedQuery("복리의 의미는?")).thenReturn(embedding);
+        when(vectorStoreRepository.searchSimilarQuizzes(embedding, 7L, 3)).thenReturn(List.of(
+            new SimilarQuizHit(202L, 7L, "복리란 무엇인가?", 0.94996d)
+        ));
+        when(quizRepository.findAllById(List.of(202L))).thenReturn(List.of(
+            quiz(202L, "복리란 무엇인가?", QuestionType.SUBJECTIVE)
+        ));
+
+        GeneratedQuizCandidateResponse response = service.analyzeCandidate(draft);
+
+        assertThat(response.similarQuizzes()).hasSize(1);
+        assertThat(response.similarQuizzes().getFirst().similarityScore()).isEqualTo(0.95d);
+        assertThat(response.exactDuplicate()).isFalse();
+    }
+
+    @Test
     void skipsStaleVectorHitsMissingFromMysql() {
         GeneratedQuizDraft draft = draft("주식과 채권의 차이는?");
         float[] embedding = new float[] {0.2f};
