@@ -13,11 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Primary;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 @Service
-@Primary
+@ConditionalOnProperty(name = "quiz.generation.mode", havingValue = "mock", matchIfMissing = true)
 @RequiredArgsConstructor
 public class MockQuizGenerationService implements QuizGenerationService {
 

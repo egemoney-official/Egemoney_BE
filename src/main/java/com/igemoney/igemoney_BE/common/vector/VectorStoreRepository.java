@@ -17,5 +17,7 @@ public interface VectorStoreRepository {
 
     void deleteQuizEmbedding(long quizId);
 
+    int deleteAllQuizEmbeddings();
+
     List<SimilarQuizHit> searchSimilarQuizzes(float[] embedding, long topicId, int topK);
 }

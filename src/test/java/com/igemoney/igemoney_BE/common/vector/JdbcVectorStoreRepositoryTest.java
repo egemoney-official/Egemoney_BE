@@ -205,6 +205,19 @@ class JdbcVectorStoreRepositoryTest {
     }
 
     @Test
+    void deleteAllQuizEmbeddingsClearsQuizEmbeddingTable() {
+        JdbcVectorStoreRepository repository = new JdbcVectorStoreRepository(jdbcTemplate);
+        when(jdbcTemplate.update(anyString())).thenReturn(5);
+
+        int deleted = repository.deleteAllQuizEmbeddings();
+
+        assertThat(deleted).isEqualTo(5);
+        ArgumentCaptor<String> sqlCaptor = ArgumentCaptor.forClass(String.class);
+        verify(jdbcTemplate).update(sqlCaptor.capture());
+        assertThat(sqlCaptor.getValue()).contains("delete from quiz_embeddings");
+    }
+
+    @Test
     void vectorLiteralRejectsEmptyEmbedding() {
         org.junit.jupiter.api.Assertions.assertThrows(
             IllegalArgumentException.class,
