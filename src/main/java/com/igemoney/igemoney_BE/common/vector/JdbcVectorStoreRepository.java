@@ -57,6 +57,10 @@ public class JdbcVectorStoreRepository implements VectorStoreRepository {
         where quiz_id = ?
         """;
 
+    private static final String DELETE_ALL_QUIZ_EMBEDDINGS_SQL = """
+        delete from quiz_embeddings
+        """;
+
     private static final String SEARCH_SIMILAR_QUIZZES_SQL = """
         select quiz_id, topic_id, question_title, 1 - (embedding <=> ?::vector) as similarity
         from quiz_embeddings
@@ -169,6 +173,11 @@ public class JdbcVectorStoreRepository implements VectorStoreRepository {
             DELETE_QUIZ_EMBEDDING_SQL,
             ps -> ps.setLong(1, quizId)
         );
+    }
+
+    @Override
+    public int deleteAllQuizEmbeddings() {
+        return jdbcTemplate.update(DELETE_ALL_QUIZ_EMBEDDINGS_SQL);
     }
 
     @Override

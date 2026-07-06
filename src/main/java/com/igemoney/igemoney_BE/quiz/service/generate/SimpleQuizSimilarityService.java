@@ -13,9 +13,11 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 @Service
+@ConditionalOnProperty(name = "quiz.generation.mode", havingValue = "mock", matchIfMissing = true)
 @RequiredArgsConstructor
 public class SimpleQuizSimilarityService implements QuizSimilarityService {
 

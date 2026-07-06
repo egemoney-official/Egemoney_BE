@@ -9,12 +9,14 @@ import com.igemoney.igemoney_BE.quiz.dto.common.QuizResponse;
 import com.igemoney.igemoney_BE.quiz.dto.create.QuizCreateRequest;
 import com.igemoney.igemoney_BE.quiz.entity.Quiz;
 import com.igemoney.igemoney_BE.quiz.entity.enums.QuestionType;
+import com.igemoney.igemoney_BE.quiz.event.QuizEmbeddingDeleteRequestedEvent;
 import com.igemoney.igemoney_BE.quiz.repository.BookmarkRepository;
 import com.igemoney.igemoney_BE.quiz.repository.QuizRepository;
 import com.igemoney.igemoney_BE.quiz.repository.UserQuizAttemptRepository;
 import com.igemoney.igemoney_BE.quiz.service.create.QuizCreateService;
 import java.util.Locale;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -36,6 +38,7 @@ public class QuizAdminService {
     private final QuizRepository quizRepository;
     private final BookmarkRepository bookmarkRepository;
     private final UserQuizAttemptRepository userQuizAttemptRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     public QuizResponse createQuiz(QuizCreateRequest request) {
         validateDuplicateQuestion(request);
@@ -65,6 +68,7 @@ public class QuizAdminService {
         bookmarkRepository.deleteByQuizId(quizId);
         userQuizAttemptRepository.deleteByQuizId(quizId);
         quizRepository.delete(quiz);
+        eventPublisher.publishEvent(new QuizEmbeddingDeleteRequestedEvent(quizId));
     }
 
     private Page<Quiz> findQuizzes(Long topicId, String questionType, PageRequest pageable) {
