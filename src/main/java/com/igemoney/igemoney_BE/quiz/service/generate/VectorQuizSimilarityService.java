@@ -52,8 +52,8 @@ public class VectorQuizSimilarityService implements QuizSimilarityService {
             .filter(response -> response != null)
             .toList();
 
-        boolean exactDuplicate = relevantHits.stream()
-            .anyMatch(hit -> hit.similarity() >= EXACT_DUPLICATE_THRESHOLD);
+        boolean exactDuplicate = similarQuizzes.stream()
+            .anyMatch(similar -> similar.similarityScore() >= EXACT_DUPLICATE_THRESHOLD);
         Double maxSimilarityScore = similarQuizzes.stream()
             .map(SimilarQuizResponse::similarityScore)
             .max(Double::compareTo)
