@@ -37,3 +37,24 @@ springdoc:
     operations-sorter: alpha
   paths-to-match:
     - /api/**
+
+vector:
+  datasource:
+    url: ${VECTOR_DB_URL:}
+    username: ${VECTOR_DB_USERNAME:}
+    password: ${VECTOR_DB_PASSWORD:}
+  enabled: ${VECTOR_STORE_ENABLED:false}
+
+embedding:
+  voyage:
+    api-key: ${VOYAGE_API_KEY:}
+    model: voyage-3.5
+
+quiz:
+  generation:
+    mode: ${QUIZ_GENERATION_MODE:mock}
+
+rag:
+  retrieval:
+    strategy: ${RAG_CHUNKING_STRATEGY:structure}
+    top-k: 6
