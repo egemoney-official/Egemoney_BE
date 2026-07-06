@@ -6,6 +6,8 @@ import com.igemoney.igemoney_BE.knowledge.dto.KnowledgeEvaluationRequest;
 import com.igemoney.igemoney_BE.knowledge.dto.KnowledgeIngestionSummary;
 import com.igemoney.igemoney_BE.knowledge.dto.KnowledgeReindexRequest;
 import com.igemoney.igemoney_BE.knowledge.eval.RetrievalEvaluationService;
+import com.igemoney.igemoney_BE.quiz.dto.sync.QuizEmbeddingReindexResponse;
+import com.igemoney.igemoney_BE.quiz.service.sync.QuizEmbeddingSyncService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
@@ -26,6 +28,7 @@ public class KnowledgeAdminController {
 
     private final KnowledgeIngestionService knowledgeIngestionService;
     private final RetrievalEvaluationService retrievalEvaluationService;
+    private final QuizEmbeddingSyncService quizEmbeddingSyncService;
 
     @PostMapping("/reindex")
     @Operation(summary = "지식 문서 벡터 재색인")
@@ -39,5 +42,11 @@ public class KnowledgeAdminController {
     public String evaluate(@RequestBody(required = false) KnowledgeEvaluationRequest request) {
         List<String> strategies = request == null ? List.of() : request.strategies();
         return retrievalEvaluationService.evaluate(strategies).markdown();
+    }
+
+    @PostMapping("/reindex-quizzes")
+    @Operation(summary = "퀴즈 벡터 임베딩 재색인")
+    public QuizEmbeddingReindexResponse reindexQuizzes() {
+        return quizEmbeddingSyncService.reindexAll();
     }
 }

@@ -360,6 +360,11 @@ class KnowledgeIngestionServiceTest {
         }
 
         @Override
+        public int deleteAllQuizEmbeddings() {
+            return 0;
+        }
+
+        @Override
         public List<SimilarQuizHit> searchSimilarQuizzes(float[] embedding, long topicId, int topK) {
             return List.of();
         }
